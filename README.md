@@ -1,5 +1,13 @@
-# clean_barcodes
-clean_barcodes.py is a tool for cleaning ONTbarcoder-provided demultiplexed COI files through blastn searches against a pre-defined sequence database.
+# clean_demultiplexed, clean_barcodes
+clean_demultiplexed.py and clean_barcodes.py are two scripts for cleaning ONTbarcoder-provided demultiplexed COI files through blastn searches against a custom sequence database.
+
+**clean_demultiplexed.py** converts fasta files provided by ONTbarcoder into the format compatible with BLAST and clean_barcodes.py :)
+Specifically, it converts sequences where special characters [EFQP] were used instead of [ACGT] as a way of indicating sequences in reverse orientation - as discussed in [https://github.com/asrivathsan/ONTbarcoder/issues/2](https://github.com/asrivathsan/ONTbarcoder/issues/2). Undetermnied bases "N" remain unchanged.
+Also, it replaces any characters ":" (colon) in sequence names, and removes any portion of sequence name after space.
+
+Usage: 
+
+
 
 The script breaks up fasta files provided by ONTbarcoder based on results of BLAST against a custom database.
 As input, it uses a folder with de-multiplexed fasta files, representing noisy Nanopore COI sequences for different samples
