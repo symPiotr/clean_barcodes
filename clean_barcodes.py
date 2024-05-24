@@ -14,8 +14,6 @@ if len(sys.argv) != 4:
 
 Script, WorkingDir, InputDir, ReferenceDb = sys.argv
 
-Categories = ['BEE', 'WOLBACHIA', 'STREPSIPTERA'] ### For now, pre-defined. In subsequent versions, they will be provided in a separate file.
-
 percIdentThreshold = 90
 
 
@@ -43,6 +41,17 @@ def ImportFastaAsList(fasta_file):
    return(Seq_list)
 
 
+
+def SetCategories(ref_fasta_file):
+    FASTA = open(ref_fasta_file, 'r')
+    categories = []
+    for line in FASTA:
+        if line.startswith(">"):
+            category = line[1:].split("_")[0]
+            if not category in categories:
+                categories.append(category)
+    FASTA.close() 
+    return(categories)   
 
 
 
@@ -74,6 +83,16 @@ else:
 	sys.exit('ERROR! Database file not found. Check the path that you provided!\n'
 	         'Exiting......\n')
 
+print("Checking the reference db and setting categories ...")
+Categories = SetCategories(ReferenceDb)
+print("OK! Reads will be matched to the following categories:")
+for category in Categories:
+    print("\t-", category)
+print("\t- unclassified\n")
+
+
+#Categories = ['CARABUS', 'TACHINID', 'HOMO', 'WOLBACHIA'] ### For now, pre-defined. In subsequent versions, they will be provided in a separate file.
+#Categories = ['HOMO', 'ZAIRA', 'CARABUS'] ### For now, pre-defined. In subsequent versions, they will be provided in a separate file.
 
 
 
@@ -127,7 +146,7 @@ if not os.path.exists("%s/blastn_results" % WorkingDir):
 #### 4. Process individual FASTA files ####
 
 Lib_count = len(FASTA_list)
-print("Processing %s libraries in your directory ...")
+print("Processing %s libraries in your directory ..." % Lib_count)
 
 Lib_no = 0
 for FASTA in FASTA_list:
@@ -135,7 +154,7 @@ for FASTA in FASTA_list:
     print("Processing library %s / %s , %s .... " % (Lib_no, Lib_count, FASTA)) 
 
     if not os.path.exists("%s/blastn_results/%s.blastn" % (WorkingDir, FASTA)):    
-        os.system("blastn -task megablast -db %s -query %s/%s -outfmt 6 -num_threads 8 -max_hsps 1 -max_target_seqs 1 -evalue 1e-10 -perc_identity 80 > %s/blastn_results/%s.blastn" % (ReferenceDb, InputDir, FASTA, WorkingDir, FASTA))
+        os.system("blastn -task megablast -db %s -query %s/%s -outfmt 6 -num_threads 8 -max_hsps 1 -max_target_seqs 1 -evalue 1e-10 -perc_identity 80 > %s/blastn_results/%s.blastn 2>/dev/null" % (ReferenceDb, InputDir, FASTA, WorkingDir, FASTA))
     
     BLASTN = open("%s/blastn_results/%s.blastn" % (WorkingDir, FASTA), "r")
     
@@ -209,7 +228,7 @@ for FASTA in FASTA_list:
 
 
 #######################################
-###### 5. Print stats to stdout  ######
+###### 5. Print stats to stdout and to file  ######
 
 print("\nAnalysis complete :) \nNumbers of reads per category, per file:")
 
@@ -217,6 +236,15 @@ for row in SeqCounts:
     for item in row[:-1]:
         print(item, end="\t")
     print(row[-1])
+    
+SUMMARY = open("%s/000_splitting_summary.txt" % WorkingDir, "w")
+
+for row in SeqCounts:
+    for item in row[:-1]:
+        print(item, end="\t", file = SUMMARY)
+    print(row[-1], file = SUMMARY)
+    
+SUMMARY.close()
 
 
 #######################################
