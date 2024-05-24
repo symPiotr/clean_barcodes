@@ -43,9 +43,9 @@ Genetic code: 5
 
 6. Change directory to the `demultiplexed` folder in your output directory, and run [clean_demultiplexed.py](https://github.com/symPiotr/clean_barcodes/blob/main/clean_demultiplexed.py) on all *fa files:
 ```
-cd BAR02
-cd demultiplexed
-for file in *fa; do clean_demultiplexed.py $file; done 
+$ cd BAR02
+$ cd demultiplexed
+$ for file in *fa; do clean_demultiplexed.py $file; done 
 ```  
   
 7. Run [clean_barcodes.py](https://github.com/symPiotr/clean_barcodes/blob/main/clean_barcodes.py) on cleaned fasta files, using a pre-configured reference database. When processing barcoding libraries for diverse Swedish hoppers, not all of which closely matched references, I used a reference db [HOMO_WOLBACHIA_PIPUNCULIDAE.fasta](https://github.com/symPiotr/clean_barcodes/blob/main/HOMO_WOLBACHIA_PIPUNCULIDAE.fasta) to filter out human, parasitoid, and *Wolbachia/Rickettsia* reads, with the assumtion that the remaining reads are more likely to represent the hopper barcode.  
