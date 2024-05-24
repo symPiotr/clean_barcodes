@@ -23,9 +23,10 @@ pear -f BARCODES_R1.fq.gz -r BARCODES_R2.fq.gz -o BAR -j 16
 (base) piotr.lukasik@bug:~/raw_data/illumina/amplicon_sequencing/20240430_NextSeq_batch21/BARCODES$ for no in 1 2 3 4; do echo $no; pear -f BARCODES_pool_0"$no"_R1.fq.gz -r BARCODES_pool_0"$no"_R2.fq.gz -o ~/20240524_barcodes/BAR0"$no" -j 40; done 
 ```  
   
-3. I download the BAR0x.assembled.fastq files to my Mac, using Cyberduck  
+3. I download the `BAR0x.assembled.fastq` files to my Mac, using Cyberduck  
   
-4. On my Mac, I run [ONTbarcoder v0.1.9](https://github.com/asrivathsan/ONTbarcoder) using the assembled.fastq and the [demultiplexing file](file.txt) provided by Anna 
+4. On my Mac, I run [ONTbarcoder v0.1.9](https://github.com/asrivathsan/ONTbarcoder) - initially, using the BAR02.assembled.fastq and the [demultiplexing file for BAR02](https://github.com/symPiotr/clean_barcodes/blob/main/BAR02_IBA_and_phorid_demultiplexing_sheet.txt) provided by Anna.  
+
 
 4. Copy BARCODES* data from /mnt/qnap/users/symbio/raw_data/illumina/metagenomics/20240130_NextSeq_batch20
 
