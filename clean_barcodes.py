@@ -3,7 +3,7 @@
 import sys, os
 
 if len(sys.argv) != 4:
-	sys.exit('---------------- clean_barcodes.py v. 0.2 - by Piotr Łukasik, 9 Feb 2024 ---------------\n\n'
+	sys.exit('---------------- clean_barcodes.py v. 0.3 - by Piotr Łukasik, 24 May 2024 ---------------\n\n'
 	         'This script breaks up fasta files provided by ONTbarcoder based on results of BLAST searches against a custom database.\n'
 	         'The script was designed to use as input a folder with de-multiplexed fasta files, representing noisy Nanopore COI sequences for different samples\n'
 	         '(but it should also work with most other fasta files, for COI as otherwise, as long as you prepare the right database).'
