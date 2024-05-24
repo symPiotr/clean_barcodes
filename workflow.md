@@ -70,8 +70,11 @@ $ clean_barcodes.py split demultiplexed /Users/piotrlukasik/bioinfo/20240211_bar
   
 9. For split folders (Unclassified, Pipunculidae, Wolbachia) run ONTbarcoder in "barcode reconstruction" mode.
   
-10. For the three datasets, consider using mothur (or another tool) to identify unique genotypes and cluster them into OTUs
-    mothur "#unique.seqs(fasta=Allbarcodes.fa)"
+10. For the three datasets, consider using [mothur](https://mothur.org/) (or another tool) to identify unique genotypes and cluster them into OTUs
+```
+mothur "#unique.seqs(fasta=barcodes.fa, format=name)"
+```
+
     dist.seqs(fasta=Allbarcodes.unique.fa)
     cluster(column=final.dist, name=final.names) https://mothur.org/wiki/cluster/
     
