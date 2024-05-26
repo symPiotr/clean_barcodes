@@ -66,21 +66,30 @@ $ mkdir split
 $ clean_barcodes.py split demultiplexed /Users/piotrlukasik/bioinfo/20240211_barcode_splitting/HOMO_WOLBACHIA_PIPUNCULIDAE.fasta
 ```  
   
-8. Display stats --- file xxx  
+8. Display stats --- file *000_splitting_summary.txt* in your output folder contains info on read number matched to each target.  
   
-9. For split folders (Unclassified, Pipunculidae, Wolbachia) run ONTbarcoder in "barcode reconstruction" mode.
+9. For each of the split folders that you care about (Unclassified, Pipunculidae, Wolbachia) run ONTbarcoder in "barcode reconstruction" mode.  
   
-10. For the three datasets, consider using [mothur](https://mothur.org/) (or another tool) to identify unique genotypes and cluster them into OTUs
+10. In Excel, combine the aforementioned *000_splitting_summary.txt* and *runsummary.xlsx* for each split folder
+  
+11. For the three datasets, consider using [mothur](https://mothur.org/), or another tool, to identify unique genotypes and cluster them into OTUs
 ```
-mothur "#unique.seqs(fasta=barcodes.fa, format=name)"
-```
+### Identifying unique sequences
+mothur "#unique.seqs(fasta=BAR.fasta, format=name)"
 
-    dist.seqs(fasta=Allbarcodes.unique.fa)
-    cluster(column=final.dist, name=final.names) https://mothur.org/wiki/cluster/
+### Clustering
+mothur "#dist.seqs(fasta=BAR.unique.fasta)"
+mothur "#cluster(column=BAR.unique.dist, name=BAR.names, cutoff=0)"
+mothur "#bin.seqs(list=BAR.unique.opti_mcc.list, fasta=BAR.fasta)"
+   ### -> This should result in file BAR.unique.opti_mcc.0.fasta, with information on which zero-radius OTU (zOTU) each sequence is assigned to.
+mothur "#cluster(column=BAR.unique.dist, name=BAR.names, cutoff=0.03)"
+mothur "#bin.seqs(list=BAR.unique.opti_mcc.list, fasta=BAR.fasta)"
+   ### -> This should result in file BAR.unique.opti_mcc.0.03.fasta, with information on which 97% OTU each sequence is assigned to.
+``` 
     
-11. Assign taxonomy to sequences. Perhaps using vsearch / sintax --- or perhaps by submitting batches of your sequences to BOLD?
+12. Assign taxonomy to sequences. Perhaps using vsearch / sintax --- or perhaps by submitting batches of your sequences to BOLD
     ```
     vsearch --sintax Allbarcodes.fa -db /mnt/qnap/users/symbio/software/databases/MIDORI_with_tax_spikeins_endo_RDP.fasta -tabbedout otus2.tax -strand both -sintax_cutoff 0.8
     ```
   
-12. Combine all resulting files in Excel!  
+13. Combine all resulting information in Excel!
